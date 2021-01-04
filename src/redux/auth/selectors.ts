@@ -1,6 +1,6 @@
 import { createSelector } from "reselect";
 import { ApplicationOutputSelector, ApplicationRootState } from "../../types";
-import { AuthMachineContext, AuthState, AuthStateStatus, User } from "./types";
+import { AuthState, AuthStateStatus, User } from "./types";
 
 const selectAuth = (state: ApplicationRootState): AuthState => state.auth;
 
