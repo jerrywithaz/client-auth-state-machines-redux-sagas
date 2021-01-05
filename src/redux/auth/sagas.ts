@@ -3,6 +3,8 @@ import { confirmUser, loginError, loginSuccess } from "./actions";
 import { accountSetupApi, loginApi, logoutApi } from "./apis";
 import { AccountSetupAction, AuthActionEnum, LoginAction, User } from "./types";
 
+// ********** The Login Saga and It's Watcher **********
+
 function* loginSaga({ payload: { email, password } }: LoginAction) {
   try {
     const user: User = yield call(loginApi, email, password);
@@ -18,17 +20,21 @@ function* loginSaga({ payload: { email, password } }: LoginAction) {
   }
 }
 
-function* loginSagaWatcher() {
+function* watchLogin() {
   yield takeLatest(AuthActionEnum.LOGIN, loginSaga);
 }
+
+// ********** The Logout Saga and It's Watcher **********
 
 function* logoutSaga() {
   yield call(logoutApi);
 }
 
-function* logoutSagaWatcher() {
+function* watchLogout() {
   yield takeEvery(AuthActionEnum.LOGOUT, logoutSaga);
 }
+
+// ********** The Account Setup Saga and It's Watcher **********
 
 function* accountSetupSaga({ payload }: AccountSetupAction) {
   try {
@@ -39,12 +45,13 @@ function* accountSetupSaga({ payload }: AccountSetupAction) {
   }
 }
 
-function* accountSetupSagaWatcher() {
+function* watchAccountSetup() {
   yield takeLatest(AuthActionEnum.ACCOUNT_SETUP, accountSetupSaga);
 }
 
+/** The root saga for the authentication state. Initializes all of the authentication sagas */
 function* authSagas() {
-  yield all([loginSagaWatcher(), logoutSagaWatcher(), accountSetupSagaWatcher()]);
+  yield all([watchLogin(), watchLogout(), watchAccountSetup()]);
 }
 
 export default authSagas;

@@ -8,7 +8,7 @@ import createSagaMiddleware from 'redux-saga';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 import createReducer from './reducers';
-import authSaga from './auth/sagas';
+import rootSaga from './rootSaga';
 
 import { InjectedStore, ApplicationRootState } from '../types';
 
@@ -51,8 +51,8 @@ export default function configureStore(
   store.injectedSagas = {}; // Saga registry
 
   // We tell redux saga to start the auth saga
-  store.runSaga(authSaga, {});
-
+  store.runSaga(rootSaga, {});
+  
   if (module.hot) {
     module.hot.accept('./reducers', () => {
       forceReducerReload(store);

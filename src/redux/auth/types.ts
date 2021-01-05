@@ -1,5 +1,6 @@
 import { State } from "xstate";
 
+/** An Enum of all of the available action types for the auth reducer */
 export enum AuthActionEnum {
   LOGIN = "auth/LOGIN",
   LOGIN_SUCCESS = "auth/LOGIN_SUCCESS",
